@@ -4,7 +4,7 @@ using System;
 namespace GoFishTests
 {
     [TestClass]
-    public class UnitTest1
+    public class PlayerTests
     {
         [TestMethod]
         public void TestMethod1()
