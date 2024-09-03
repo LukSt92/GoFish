@@ -11,7 +11,7 @@ namespace GoFish
 {
     public class Deck: List<Card>
     {
-        private static Random random = new Random();
+        private static Random random = Player.Random;
         public Deck()
         {
             Reset();
