@@ -78,5 +78,31 @@ namespace GoFishTests
             CollectionAssert.AreEqual(new List<string>() { "Four of Diamonds" }, hand);
             Assert.AreEqual("Owen has 1 card and 2 books", player.Status);
         }
+        [TestMethod]
+        public void TestDrawCard()
+        {
+            var player = new Player("Owen", new List<Card>());
+            player.DrawCard(new Deck());
+            Assert.AreEqual(1, player.Hand.Count());
+            Assert.AreEqual("Ace of Diamonds", player.Hand.First().ToString());
+        }
+        [TestMethod]
+        public void TestRandomValueFromHand()
+        {
+            var player = new Player("Owen", new Deck());
+            Player.Random = new MockRandom() { ValueToReturn = 0 };
+            Assert.AreEqual("Ace", player.RandomValueFromHand().ToString());
+            Player.Random = new MockRandom() { ValueToReturn = 4 };
+            Assert.AreEqual("Two", player.RandomValueFromHand().ToString());
+            Player.Random = new MockRandom() { ValueToReturn = 8 };
+            Assert.AreEqual("Three", player.RandomValueFromHand().ToString());
+        }
+    }
+    public class MockRandom : System.Random
+    {
+        public int ValueToReturn { get; set; } = 0;
+        public override int Next() => ValueToReturn;
+        public override int Next(int maxValue) => ValueToReturn;
+        public override int Next(int minValue, int maxValue) => ValueToReturn;
     }
 }
