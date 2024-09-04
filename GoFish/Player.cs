@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,7 +34,6 @@ namespace GoFish
         }
         public IEnumerable<Card> DoYouHaveAny(Values value, Deck deck)
         {
-            // TODO
             var cardsToTakeAway = hand.FindAll(x => x.Value == value).OrderBy(x => x.Suit);
             hand.RemoveAll(x => x.Value == value);
             if (hand.Count() == 0)
@@ -42,13 +42,18 @@ namespace GoFish
         }
         public void AddCardsAndPullOutBooks(IEnumerable<Card> cards)
         {
-            // TODO
+            hand.AddRange(cards);
+            var foundBooks = hand.GroupBy(x => x.Value).Where(x => x.Count() == 4).Select(x => x.Key);
+            books.AddRange(foundBooks);
+            books.Sort();
+            hand = hand.Where(card => !books.Contains(card.Value)).ToList();
         }
         public void DrawCard(Deck stock)
         {
-            // TODO
+            if (stock.Count() > 0)
+                AddCardsAndPullOutBooks(new List<Card>() { stock.Deal(0) });
         }
-        public Values RandomValueFromHand() => throw new NotImplementedException(); // TODO
+        public Values RandomValueFromHand() => hand.OrderBy(x => x.Value).Select(x => x.Value).Skip(Random.Next(hand.Count())).First();
         public override string ToString() => Name;
     }
 }
