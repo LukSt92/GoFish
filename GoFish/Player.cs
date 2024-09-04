@@ -34,7 +34,11 @@ namespace GoFish
         public IEnumerable<Card> DoYouHaveAny(Values value, Deck deck)
         {
             // TODO
-            throw new NotImplementedException();
+            var cardsToTakeAway = hand.FindAll(x => x.Value == value).OrderBy(x => x.Suit);
+            hand.RemoveAll(x => x.Value == value);
+            if (hand.Count() == 0)
+                GetNextHand(deck);
+            return cardsToTakeAway;
         }
         public void AddCardsAndPullOutBooks(IEnumerable<Card> cards)
         {
