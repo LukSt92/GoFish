@@ -16,7 +16,7 @@ namespace GoFish
         public IEnumerable<Values> Books => books;
         public readonly string Name;
         public static string S(int s) => s == 1 ? "" : "s";
-        public string Status => throw new NotImplementedException(); // TODO
+        public string Status => $"{Name} has {hand.Count()} card{S(hand.Count())} and {books.Count} books";
         public Player(string name) => Name = name;
 
         public Player(string name, IEnumerable<Card> cards)
@@ -26,7 +26,10 @@ namespace GoFish
         }
         public void GetNextHand(Deck stock)
         {
-            // TODO
+            while (stock.Count() > 0 && hand.Count() < 5)
+            {
+                hand.Add(stock.Deal(0));
+            }
         }
         public IEnumerable<Card> DoYouHaveAny(Values value, Deck deck)
         {
