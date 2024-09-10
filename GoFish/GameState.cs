@@ -59,7 +59,12 @@ namespace GoFish
         }
         public string CheckForWinner()
         {
-            throw new NotImplementedException();
+            var playerCards = Players.Select(x => x.Hand.Count()).Sum();
+            if (playerCards > 0) return "";
+            var winningBookCount = Players.Select(player => player.Books.Count()).Max();
+            var winners = Players.Where(player => player.Books.Count() == winningBookCount);
+            if (winners.Count() == 1) return $"The winner is {winners.First().Name}";
+            return $"The winners are {string.Join(" and ", winners)}";
         }
     }
 }
