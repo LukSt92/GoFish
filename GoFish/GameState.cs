@@ -15,7 +15,18 @@ namespace GoFish
         public readonly Deck Stock;
         public GameState(string humanPlayerName, IEnumerable<string> opponentNames, Deck stock)
         {
-            throw new NotImplementedException();
+            this.Stock = stock;
+            HumanPlayer = new Player(humanPlayerName);
+            HumanPlayer.GetNextHand(Stock);
+            var opponents = new List<Player>();
+            foreach (var name in opponentNames)
+            {
+                var player = new Player(name);
+                player.GetNextHand(Stock);
+                opponents.Add(player);
+            }
+            Opponents = opponents;
+            Players = new List<Player>() { HumanPlayer}.Concat(Opponents);
         }
         public Player RandomPlayer(Player currentPlayer) =>
             throw new NotImplementedException();

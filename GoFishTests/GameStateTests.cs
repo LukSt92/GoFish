@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace GoFishTests
 {
+    [TestClass]
     public class GameStateTests
     {
         [TestMethod]
