@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,8 +29,7 @@ namespace GoFish
             Opponents = opponents;
             Players = new List<Player>() { HumanPlayer}.Concat(Opponents);
         }
-        public Player RandomPlayer(Player currentPlayer) =>
-            throw new NotImplementedException();
+        public Player RandomPlayer(Player currentPlayer) => Players.Where(x => x != currentPlayer).Skip(Player.Random.Next(Players.Count() - 1)).First();
         public string PlayRound(Player player, Player playerToAsk, Values valueTOAskFor, Deck stock)
         {
             throw new NotImplementedException();
