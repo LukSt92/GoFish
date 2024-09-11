@@ -47,7 +47,7 @@ namespace GoFish
             else
             {
                 player.DrawCard(stock);
-                message += $"{player.Name} drew a card";
+                message += $"{player.Name} drew a card{Environment.NewLine}";
             }
             if (player.Hand.Count() == 0)
             {
@@ -61,6 +61,7 @@ namespace GoFish
         {
             var playerCards = Players.Select(x => x.Hand.Count()).Sum();
             if (playerCards > 0) return "";
+            GameOver = true;
             var winningBookCount = Players.Select(player => player.Books.Count()).Max();
             var winners = Players.Where(player => player.Books.Count() == winningBookCount);
             if (winners.Count() == 1) return $"The winner is {winners.First().Name}";

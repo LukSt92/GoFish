@@ -24,11 +24,24 @@ namespace GoFish
         }
         public void NextRound(Player playerToAsk, Values valueToAskFor)
         {
-            throw new NotImplementedException();
+
+            Status = gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock) + Environment.NewLine;
+            ComputerPlayersPlayNextRound();
+            Status += string.Join(Environment.NewLine,
+                                  gameState.Players.Select(player => player.Status));
+            Status += $"{Environment.NewLine}The stock has {gameState.Stock.Count()} cards";
+            Status += Environment.NewLine + gameState.CheckForWinner();
         }
         private void ComputerPlayersPlayNextRound()
         {
-            throw new NotImplementedException();
+            IEnumerable<Player> playersWithCards;
+            do
+            {
+                playersWithCards = gameState.Opponents.Where(player => player.Hand.Count() > 0);
+                foreach (var player in playersWithCards)
+                    Status += gameState.PlayRound(player, gameState.RandomPlayer(player), player.RandomValueFromHand(), gameState.Stock);
+
+            } while ((HumanPlayer.Hand.Count() == 0) && (playersWithCards.Count() > 0));
         }
         public void NewGame()
         {
