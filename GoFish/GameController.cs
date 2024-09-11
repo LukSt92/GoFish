@@ -17,7 +17,10 @@ namespace GoFish
         public string Status { get; private set; }
         public GameController(string humanPlayerName, IEnumerable<string> computerPlayerNames)
         {
-            throw new NotImplementedException();
+            gameState = new GameState(humanPlayerName, computerPlayerNames, new Deck().Shuffle());
+            Status = $"Starting a new game with players {HumanPlayer.Name}";
+            foreach (var player in Opponents)
+                Status += $", {player.Name}";
         }
         public void NextRound(Player playerToAsk, Values valueToAskFor)
         {
