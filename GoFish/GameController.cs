@@ -45,7 +45,9 @@ namespace GoFish
         }
         public void NewGame()
         {
-            throw new NotImplementedException();
+            var computerPlayerNames = Opponents.Select(player => player.Name).ToList();
+            gameState = new GameState(HumanPlayer.Name, computerPlayerNames, new Deck().Shuffle());
+            Status = "Starting a new game";
         }
     }
 }
