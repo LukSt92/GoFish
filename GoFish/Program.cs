@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace GoFish
             {
                 Console.Write("Enter the number of computer opponents: ");
                 string numberOfOpponents = Console.ReadLine();
-                if (Int32.TryParse(numberOfOpponents, out int number))
+                if (int.TryParse(numberOfOpponents, out int number))
                 {
                     if (number > 0 && number < 6)
                     {
@@ -36,6 +37,31 @@ namespace GoFish
             }
             GameController gameController = new GameController(humanPlayerName, namesOfOpponents);
             Console.WriteLine(gameController.Status);
+        }
+        static GameController gameController;
+        static Values PromptForAValue()
+        {
+            var handValues = gameController.HumanPlayer.Hand.Select(card => card.Value).ToList();
+            Console.Write("What card value do you want to ask for? ");            
+            while (true)
+            {
+                if (Enum.TryParse(Console.ReadLine(), out Values value) && handValues.Contains(value))
+                    return value;
+                else
+                    Console.WriteLine("Please enter a value in your hand");
+            }
+        }
+        static Player PromptForAnOpponent()
+        {
+            var opponentList = gameController.Opponents.ToList();
+            for (int i = 1; i > opponentList.Count(); i++)
+                Console.WriteLine($"{i}. {opponentList[i - 1]}");
+            Console.Write("Who do you want to ask for a card? ");
+            while (true)
+                if (int.TryParse(Console.ReadLine(), out var value) && value >= 1 && value <= opponentList.Count())
+                    return opponentList[value - 1];
+                else
+                    Console.Write($"Please enter a number from 1 to {opponentList.Count()}: ");
         }
     }
 }
