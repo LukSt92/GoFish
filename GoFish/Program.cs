@@ -35,8 +35,21 @@ namespace GoFish
                 else
                     Console.WriteLine("NUMBERS ONLY!");
             }
-            GameController gameController = new GameController(humanPlayerName, namesOfOpponents);
+            gameController = new GameController(humanPlayerName, namesOfOpponents);
             Console.WriteLine(gameController.Status);
+            while (!gameController.GameOver)
+            {
+                Console.WriteLine("Your hand:");
+                foreach (var card in gameController.HumanPlayer.Hand.OrderBy(card => card.Suit).OrderBy(card => card.Value))
+                    Console.WriteLine(card);
+                var value = PromptForAValue();
+                var opponent = PromptForAnOpponent();
+                gameController.NextRound(opponent, value);
+                Console.WriteLine(gameController.Status);
+            }
+            Console.WriteLine("Press N for a new game, any other to quit.");
+            if (Console.ReadKey(true).KeyChar.ToString().ToUpper() == "N")
+                gameController.NewGame();
         }
         static GameController gameController;
         static Values PromptForAValue()
@@ -54,7 +67,7 @@ namespace GoFish
         static Player PromptForAnOpponent()
         {
             var opponentList = gameController.Opponents.ToList();
-            for (int i = 1; i > opponentList.Count(); i++)
+            for (int i = 1; i <= opponentList.Count(); i++)
                 Console.WriteLine($"{i}. {opponentList[i - 1]}");
             Console.Write("Who do you want to ask for a card? ");
             while (true)
